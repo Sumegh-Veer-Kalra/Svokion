@@ -43,13 +43,13 @@
 
     <style>
         :root {
-            --bg-main: #060611;
-            --bg-card: rgba(15, 15, 34, 0.75);
-            --color-accent: #00ffcc;
-            --color-neon-pink: #ff3366;
+            --bg-main: #080f1d;
+            --bg-card: rgba(5, 10, 20, 0.85);
+            --color-accent: #1ac9f8;
+            --color-neon-pink: #1ac9f8;
             --text-primary: #ffffff;
             --text-secondary: #9aa0c7;
-            --border-glow: rgba(0, 255, 204, 0.15);
+            --border-glow: rgba(26, 201, 248, 0.15);
             --font-heading: 'Bungee', cursive;
             --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
@@ -71,7 +71,7 @@
             align-items: center;
             padding: 40px 20px;
             background-image: 
-                radial-gradient(circle at 50% 10%, rgba(0, 255, 204, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 10%, rgba(26, 201, 248, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 90% 80%, rgba(255, 51, 102, 0.06) 0%, transparent 40%);
             overflow-x: hidden;
         }
@@ -98,9 +98,24 @@
             color: var(--color-accent);
             text-decoration: none;
             display: inline-flex;
-            align-items: baseline;
-            text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+            align-items: center;
+            gap: 16px;
+            text-shadow: 0 0 20px rgba(26, 201, 248, 0.5);
             transition: transform 0.2s ease;
+        }
+
+        .header-brand-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 16px rgba(26, 201, 248, 0.5));
+            transition: transform 0.2s ease, filter 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .logo:hover .header-brand-icon {
+            transform: scale(1.05) rotate(6deg);
+            filter: drop-shadow(0 0 24px rgba(26, 201, 248, 0.8));
         }
 
         .logo:hover {
@@ -116,7 +131,7 @@
             font-size: 11px;
             font-weight: 800;
             letter-spacing: 2px;
-            color: var(--color-neon-pink);
+            color: var(--color-accent);
             text-transform: uppercase;
             background: rgba(255, 51, 102, 0.1);
             border: 1px solid rgba(255, 51, 102, 0.3);
@@ -181,7 +196,7 @@
 
         .feature-box:hover {
             transform: translateY(-2px);
-            border-color: rgba(0, 255, 204, 0.4);
+            border-color: rgba(26, 201, 248, 0.4);
         }
 
         .feature-title {
@@ -213,7 +228,7 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: var(--color-neon-pink);
+            color: var(--color-accent);
             margin-bottom: 4px;
         }
 
@@ -242,7 +257,7 @@
 
         .game-item:hover {
             border-color: var(--color-accent);
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
+            box-shadow: 0 0 20px rgba(26, 201, 248, 0.1);
         }
 
         .game-item-info {
@@ -264,7 +279,7 @@
         }
 
         .game-item-btn {
-            background: rgba(0, 255, 204, 0.1);
+            background: rgba(26, 201, 248, 0.1);
             border: 1px solid var(--color-accent);
             color: var(--color-accent);
             font-family: var(--font-heading);
@@ -281,14 +296,14 @@
         .game-item-btn:hover {
             background: var(--color-accent);
             color: #050515;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.6);
+            box-shadow: 0 0 15px rgba(26, 201, 248, 0.6);
             transform: scale(1.05);
         }
 
         .upcoming-note {
             font-size: 13px;
             font-weight: 700;
-            color: var(--color-neon-pink);
+            color: var(--color-accent);
             text-align: center;
             margin-top: 10px;
             letter-spacing: 1px;
@@ -301,10 +316,7 @@
             flex-direction: column;
             align-items: center;
             gap: 18px;
-            padding: 40px 20px;
-            background: rgba(15, 15, 34, 0.5);
-            border-radius: 20px;
-            border: 1px dashed rgba(255, 255, 255, 0.15);
+            padding: 50px 20px 20px;
         }
 
         .cta-question {
@@ -327,13 +339,13 @@
             border-radius: 30px;
             font-weight: 800;
             letter-spacing: 1px;
-            box-shadow: 0 8px 25px rgba(0, 255, 204, 0.4);
+            box-shadow: 0 8px 25px rgba(26, 201, 248, 0.4);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-btn:hover {
             transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 12px 35px rgba(0, 255, 204, 0.7);
+            box-shadow: 0 12px 35px rgba(26, 201, 248, 0.7);
         }
 
         .footer-copyright {
@@ -357,6 +369,24 @@
             .logo {
                 font-size: 34px;
             }
+            .header-brand-icon {
+                width: 52px;
+                height: 52px;
+            }
+            .logo-img {
+                height: 68px;
+            }
+        }
+    .logo-img {
+            height: 96px;
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 0 16px rgba(26, 201, 248, 0.5));
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+        .logo-img:hover {
+            transform: scale(1.04);
+            filter: drop-shadow(0 0 24px rgba(26, 201, 248, 0.75));
         }
     </style>
 </head>
@@ -364,7 +394,7 @@
 
     <div class="container">
         <div class="header-section">
-            <a href="/" class="logo">S<span class="logo-v">v</span>K</a>
+            <a href="/" class="logo" title="Svokion"><img src="/svokion-icon.svg" alt="" class="header-brand-icon"><img src="/svokion.svg" alt="Svokion" class="logo-img"></a>
         </div>
 
         <section class="section-card">
@@ -406,27 +436,7 @@
             </div>
         </section>
 
-        <section class="section-card">
-            <h2 class="section-title">3. THE GAMES</h2>
-            <p class="section-desc">The current games available on SvK Games are:</p>
-            <div class="games-list">
-                <div class="game-item">
-                    <div class="game-item-info">
-                        <span class="game-item-title">Drop-Off</span>
-                        <span class="game-item-desc">An endless free-fall reflex runner. Dodge brick obstacles, smash through cracked bricks, earn coins, and survive the drop.</span>
-                    </div>
-                    <a href="/?game=drop-off" class="game-item-btn">PLAY</a>
-                </div>
-                <div class="game-item">
-                    <div class="game-item-info">
-                        <span class="game-item-title">The Button</span>
-                        <span class="game-item-desc">A secret mission to destroy target's manufacturing unit, press the button as it commands with the correct order and destroy the target!</span>
-                    </div>
-                    <a href="/?game=the-button" class="game-item-btn">PLAY</a>
-                </div>
-            </div>
-            <p class="upcoming-note">✨ New games are on the way! ✨</p>
-        </section>
+        
 
         <div class="cta-section">
             <div class="cta-question">Bored reading stuff?</div>

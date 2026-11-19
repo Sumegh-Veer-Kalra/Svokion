@@ -1,51 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
-  <defs>
-    <radialGradient id="bgGrad" cx="50%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#121232"/>
-      <stop offset="65%" stop-color="#060614"/>
-      <stop offset="100%" stop-color="#020208"/>
-    </radialGradient>
-
-    <linearGradient id="pinkBoltGrad" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ff5588"/>
-      <stop offset="45%" stop-color="#ff3366"/>
-      <stop offset="100%" stop-color="#cc0044"/>
-    </linearGradient>
-
-    <filter id="pinkGlow" x="-25%" y="-25%" width="150%" height="150%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur1"/>
-      <feGaussianBlur in="SourceGraphic" stdDeviation="28" result="blur2"/>
-      <feMerge>
-        <feMergeNode in="blur2"/>
-        <feMergeNode in="blur1"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-
-    <filter id="cyanTextGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.95"/>
-      <feDropShadow dx="0" dy="0" stdDeviation="14" flood-color="#00ffcc" flood-opacity="0.5"/>
-    </filter>
-
-    <clipPath id="circleClip">
-      <circle cx="256" cy="256" r="242"/>
-    </clipPath>
-  </defs>
-
-  <circle cx="256" cy="256" r="246" fill="url(#bgGrad)"/>
-
-  <g clip-path="url(#circleClip)">
-    <g filter="url(#pinkGlow)">
-      <polygon points="435,45 285,225 415,225 110,470 245,290 95,290" fill="url(#pinkBoltGrad)"/>
-    </g>
-    <polygon points="410,75 295,215 375,215 140,435 235,285 130,285" fill="#ffffff" opacity="0.55"/>
-  </g>
-
-  <circle cx="256" cy="256" r="244" fill="none" stroke="#ff3366" stroke-width="8" stroke-opacity="0.6"/>
-
-  <g filter="url(#cyanTextGlow)">
-    <text x="175" y="325" font-family="'Bungee', 'Impact', sans-serif" font-size="155" font-weight="900" fill="#00ffcc" stroke="#050512" stroke-width="22" paint-order="stroke fill" text-anchor="middle">S</text>
-    <text x="256" y="325" font-family="'Bungee', 'Impact', sans-serif" font-size="112" font-weight="900" fill="#00ffcc" stroke="#050512" stroke-width="18" paint-order="stroke fill" text-anchor="middle">v</text>
-    <text x="337" y="325" font-family="'Bungee', 'Impact', sans-serif" font-size="155" font-weight="900" fill="#00ffcc" stroke="#050512" stroke-width="22" paint-order="stroke fill" text-anchor="middle">K</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="80 -6 540 500" role="img" aria-label="Svokion icon">
+<title>Svokion icon</title>
+<ellipse cx="339.58" cy="239.5" rx="232.29" ry="225.64" fill="#121D2F"/>
+<g fill="none" stroke="#19C2F3" stroke-width="19" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="10">
+<ellipse cx="339.58" cy="239.5" rx="232.29" ry="225.64"/>
+<path d="M227.06 46.53L228.8 432.15"/>
+<path d="M234.32 236.48L341.4 85.25L461.78 248.58"/>
+<path d="M236.74 238.9L333.53 346.57"/>
+<path d="M340.79 346.57L342 95.25"/>
+<path d="M459.36 48.95L464.2 249.79L462.06 425.14"/>
+<path d="M462.99 250.99L240.7 431.63"/>
+<path d="M232.52 437.95L525.59 197.52"/>
+<polygon fill="#19C2F3" points="525.17,197.74 513.63,199.38 564.71,169.72 566.36,169.72"/>
+</g>
 </svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="80 -6 540 500" role="img" aria-label="Svokion icon">
+<title>Svokion icon</title>
+<ellipse cx="339.58" cy="239.5" rx="232.29" ry="225.64" fill="#121D2F"/>
+<g fill="none" stroke="#19C2F3" stroke-width="19" stroke-linecap="round" stroke-linejoin="miter" stroke-miterlimit="10">
+<ellipse cx="339.58" cy="239.5" rx="232.29" ry="225.64"/>
+<path d="M227.06 46.53L228.8 432.15"/>
+<path d="M234.32 236.48L341.4 85.25L461.78 248.58"/>
+<path d="M236.74 238.9L333.53 346.57"/>
+<path d="M340.79 346.57L342 95.25"/>
+<path d="M459.36 48.95L464.2 249.79L462.06 425.14"/>
+<path d="M462.99 250.99L240.7 431.63"/>
+<path d="M232.52 437.95L525.59 197.52"/>
+<polygon fill="#19C2F3" points="525.17,197.74 513.63,199.38 564.71,169.72 566.36,169.72"/>
+</g>
+</svg>

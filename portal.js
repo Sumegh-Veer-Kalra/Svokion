@@ -46,6 +46,8 @@ class PortalController {
         this.adminUsersCache = null;
         this.activeAdminTab = "games";
         this.usernameModalRequired = false;
+        this.isDeveloper = false;
+        this.activeStudioTab = "projects";
 
         this.setupStorageGuard();
         this.init();
@@ -197,6 +199,7 @@ class PortalController {
             this.isOwner = this.userRole === "owner";
             this.isAdmin = Boolean(cached.isAdmin) || this.isOwner;
             this.isTester = Boolean(cached.isTester) || this.isAdmin;
+            this.isDeveloper = this.userRole === "developer" || Boolean(cached.isDeveloper) || this.isAdmin;
 
             const nameEl = document.getElementById("side-user-name");
             const editUsernameBtn = document.getElementById("side-edit-username-btn");
@@ -229,6 +232,12 @@ class PortalController {
                     badgeEl.className = "side-user-badge admin";
                 }
                 if (adminTopBar) adminTopBar.style.display = "flex";
+            } else if (this.userRole === "developer") {
+                if (badgeEl) {
+                    badgeEl.textContent = "DEVELOPER";
+                    badgeEl.className = "side-user-badge developer";
+                }
+                if (adminTopBar) adminTopBar.style.display = "none";
             } else if (this.userRole === "tester") {
                 if (badgeEl) {
                     badgeEl.textContent = "PLAYTESTER";
@@ -387,7 +396,7 @@ class PortalController {
             <div class="game-info">
                 <h3 class="game-title">${game.title}</h3>
                 <div class="game-meta" style="display: flex; justify-content: flex-start; align-items: center; font-size: 11px; color: var(--text-secondary);">
-                    <span style="color: var(--color-neon-pink); font-weight: 800; letter-spacing: 0.5px;">${displayCategory}</span>
+                    <span style="color: var(--color-accent); font-weight: 800; letter-spacing: 0.5px;">${displayCategory}</span>
                     <span style="opacity: 0.4; margin: 0 6px;">•</span>
                     <span>${game.orientation.toUpperCase()}</span>
                 </div>
@@ -576,8 +585,8 @@ class PortalController {
                 const header = document.createElement("div");
                 header.style.cssText = "grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 20px 0 30px 0;";
                 header.innerHTML = `
-                    <h3 style="font-size: 18px; margin: 0 0 10px 0; color: var(--text-primary); font-family: var(--font-primary);">Your search didn't matched anything🤔</h3>
-                    <p style="font-size: 14px; margin: 0; color: var(--color-neon-pink); font-family: var(--font-heading); letter-spacing: 1.5px; text-transform: uppercase;">Try these:</p>
+                    <h3 style="font-size: 18px; margin: 0 0 10px 0; color: var(--text-primary); font-family: var(--font-primary);">Your search didn't match anything🤔</h3>
+                    <p style="font-size: 14px; margin: 0; color: var(--color-accent); font-family: var(--font-heading); letter-spacing: 1.5px; text-transform: uppercase;">Try these:</p>
                 `;
                 grid.appendChild(header);
 
@@ -615,6 +624,14 @@ class PortalController {
                 if (gridSection) {
                     gridSection.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
+            });
+        });
+
+        const builderLinks = document.querySelectorAll('.studio-link, [href*="/developer"]');
+        builderLinks.forEach(link => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                this.showToast("Coming soon!");
             });
         });
 
@@ -688,7 +705,7 @@ class PortalController {
             const absolutePath = game.path.startsWith("/") ? game.path : "/" + game.path;
             this.wrapper.innerHTML = `
                 <div id="game-loader-overlay" class="game-loader-overlay">
-                    <div class="loader-pulse-logo">S<span class="logo-v">v</span>K</div>
+                    <div class="loader-pulse-logo"><img src="/svokion-icon.svg" alt="" class="loader-pulse-icon"><img src="/svokion.svg" alt="Svokion" class="loader-pulse-broad"></div>
                     <div class="loader-game-title">${game.title.toUpperCase()}</div>
                     <div class="loader-bar-track">
                         <div class="loader-bar-fill" id="loader-progress-bar"></div>
@@ -974,7 +991,7 @@ class PortalController {
         const absolutePath = game.path.startsWith("/") ? game.path : "/" + game.path;
         this.wrapper.innerHTML = `
             <div id="game-loader-overlay" class="game-loader-overlay">
-                <div class="loader-pulse-logo">S<span class="logo-v">v</span>K</div>
+                <div class="loader-pulse-logo"><img src="/svokion-icon.svg" alt="" class="loader-pulse-icon"><img src="/svokion.svg" alt="Svokion" class="loader-pulse-broad"></div>
                 <div class="loader-game-title">${game.title.toUpperCase()}</div>
                 <div class="loader-bar-track">
                     <div class="loader-bar-fill" id="loader-progress-bar"></div>
@@ -1217,15 +1234,15 @@ class PortalController {
 
     shareActiveGame() {
         const game = this.games.find(g => g.id === this.activeGameId);
-        const gameTitle = game ? game.title : "SvK Games";
+        const gameTitle = game ? game.title : "Svokion";
         const gameUrl = this.activeGameId 
             ? `https://svk-games.netlify.app/games/${this.activeGameId}/`
             : window.location.origin;
 
         if (navigator.share) {
             navigator.share({
-                title: `${gameTitle} - SvK`,
-                text: `Play ${gameTitle} instantly on SvK!`,
+                title: `${gameTitle} - Svokion`,
+                text: `Play ${gameTitle} instantly on Svokion!`,
                 url: gameUrl
             }).catch(() => {});
         } else if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -2182,6 +2199,7 @@ class PortalController {
                 this.userRole = userData.role || "user";
                 this.isOwner = this.userRole === "owner";
                 this.isAdmin = this.userRole === "admin" || this.isOwner;
+                this.isDeveloper = this.userRole === "developer" || this.isAdmin;
 
                 if (this.isOwner) {
                     this.isTester = true;
@@ -2197,6 +2215,15 @@ class PortalController {
                         badgeEl.className = "side-user-badge admin";
                     }
                     if (adminTopBar) adminTopBar.style.display = "flex";
+                } else if (this.userRole === "developer") {
+                    this.isTester = false;
+                    this.isDeveloper = true;
+                    if (badgeEl) {
+                        badgeEl.textContent = "DEVELOPER";
+                        badgeEl.className = "side-user-badge developer";
+                    }
+                    if (adminTopBar) adminTopBar.style.display = "none";
+                    this.switchAdminTopTab("games");
                 } else if (this.userRole === "tester") {
                     this.isTester = true;
                     if (badgeEl) {
@@ -2587,6 +2614,10 @@ class PortalController {
         if (tabUsers) {
             tabUsers.addEventListener("click", () => this.switchAdminTopTab("users"));
         }
+        const tabSubmissions = document.getElementById("admin-tab-submissions");
+        if (tabSubmissions) {
+            tabSubmissions.addEventListener("click", () => this.switchAdminTopTab("submissions"));
+        }
         if (refreshBtn) {
             refreshBtn.addEventListener("click", () => this.loadAdminUsers(true));
         }
@@ -2644,19 +2675,35 @@ class PortalController {
         const usersSection = document.getElementById("admin-users-section");
         const playtestSection = document.getElementById("playtest-section");
 
+        const tabSubmissions = document.getElementById("admin-tab-submissions");
+        const subSection = document.getElementById("admin-submissions-section");
+
         if (tab === "users" && this.isAdmin) {
             if (tabGames) tabGames.classList.remove("active");
             if (tabUsers) tabUsers.classList.add("active");
+            if (tabSubmissions) tabSubmissions.classList.remove("active");
             if (gamesView) gamesView.style.display = "none";
             if (playtestSection) playtestSection.style.display = "none";
+            if (subSection) subSection.style.display = "none";
             if (usersSection) usersSection.style.display = "block";
             this.loadAdminUsers(false);
+        } else if (tab === "submissions" && this.isAdmin) {
+            if (tabGames) tabGames.classList.remove("active");
+            if (tabUsers) tabUsers.classList.remove("active");
+            if (tabSubmissions) tabSubmissions.classList.add("active");
+            if (gamesView) gamesView.style.display = "none";
+            if (playtestSection) playtestSection.style.display = "none";
+            if (usersSection) usersSection.style.display = "none";
+            if (subSection) subSection.style.display = "block";
+            this.renderAdminSubmissions();
         } else {
             if (tabGames) tabGames.classList.add("active");
             if (tabUsers) tabUsers.classList.remove("active");
+            if (tabSubmissions) tabSubmissions.classList.remove("active");
             if (gamesView) gamesView.style.display = "block";
             if (playtestSection && this.isTester) playtestSection.style.display = "block";
             if (usersSection) usersSection.style.display = "none";
+            if (subSection) subSection.style.display = "none";
         }
     }
 
@@ -2860,6 +2907,10 @@ class PortalController {
                     <button type="button" class="admin-role-opt ${selectedRole === 'tester' ? 'selected' : ''}" data-role="tester">
                         <span>PLAYTESTER</span>
                         <span>Unlocks Confidential Builds</span>
+                    </button>
+                    <button type="button" class="admin-role-opt ${selectedRole === 'developer' ? 'selected' : ''}" data-role="developer">
+                        <span>DEVELOPER</span>
+                        <span>Creator of Live Games</span>
                     </button>
                     <button type="button" class="admin-role-opt ${selectedRole === 'admin' ? 'selected' : ''}" data-role="admin">
                         <span>ADMIN</span>
@@ -3499,7 +3550,7 @@ class PortalController {
                 <div class="game-info">
                     <h3 class="game-title">${game.title}</h3>
                     <div class="game-meta" style="display: flex; justify-content: flex-start; align-items: center; font-size: 11px; color: var(--text-secondary);">
-                        <span style="color: var(--color-neon-pink); font-weight: 800; letter-spacing: 0.5px;">${displayCategory}</span>
+                        <span style="color: var(--color-accent); font-weight: 800; letter-spacing: 0.5px;">${displayCategory}</span>
                         <span style="opacity: 0.4; margin: 0 6px;">•</span>
                         <span>${(game.orientation || "PORTRAIT").toUpperCase()}</span>
                     </div>
@@ -3513,6 +3564,11 @@ class PortalController {
         const section = document.getElementById("recently-played-section");
         const grid = document.getElementById("recently-played-grid-container");
         if (!section || !grid) return;
+
+        if ((this.searchQuery && this.searchQuery.length > 0) || (this.activeFilter && this.activeFilter !== "all")) {
+            section.style.display = "none";
+            return;
+        }
 
         let list = [];
         try {
@@ -3545,6 +3601,15 @@ class PortalController {
         playedGames.forEach(game => {
             grid.appendChild(this.createGameCard(game));
         });
+    }
+
+    renderAdminSubmissions() {
+        const list = document.getElementById("admin-submissions-list");
+        const countRow = document.getElementById("admin-sub-count-row");
+        if (!list) return;
+
+        if (countRow) countRow.textContent = "Showing 0 pending submissions";
+        list.innerHTML = `<div class="admin-inbox-empty">No pending submissions right now.</div>`;
     }
 }
 

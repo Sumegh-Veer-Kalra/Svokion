@@ -11,10 +11,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #060611;
-            --bg-card: rgba(15, 15, 34, 0.85);
-            --color-accent: #00ffcc;
-            --color-neon-pink: #ff3366;
+            --bg-main: #080f1d;
+            --bg-card: rgba(5, 10, 20, 0.85);
+            --color-accent: #1ac9f8;
+            --color-neon-pink: #1ac9f8;
             --text-primary: #ffffff;
             --text-secondary: #9499c3;
             --font-heading: 'Bungee', cursive;
@@ -39,7 +39,7 @@
             padding: 20px;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 50% 20%, rgba(0, 255, 204, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 20%, rgba(26, 201, 248, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255, 51, 102, 0.06) 0%, transparent 40%);
         }
 
@@ -49,11 +49,26 @@
             color: var(--color-accent);
             letter-spacing: 1px;
             text-decoration: none;
-            display: flex;
-            align-items: baseline;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
             margin-bottom: 30px;
-            text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+            text-shadow: 0 0 15px rgba(26, 201, 248, 0.5);
             transition: transform 0.2s ease;
+        }
+
+        .header-brand-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 12px rgba(26, 201, 248, 0.5));
+            transition: transform 0.2s ease, filter 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .header-logo:hover .header-brand-icon {
+            transform: scale(1.05) rotate(6deg);
+            filter: drop-shadow(0 0 20px rgba(26, 201, 248, 0.8));
         }
 
         .header-logo:hover {
@@ -73,7 +88,7 @@
             max-width: 580px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 255, 204, 0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(26, 201, 248, 0.08);
             backdrop-filter: blur(16px);
             position: relative;
             overflow: hidden;
@@ -86,7 +101,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--color-accent), var(--color-neon-pink));
+            background: linear-gradient(90deg, var(--color-accent), var(--color-accent));
         }
 
         .glitch-404 {
@@ -94,15 +109,15 @@
             font-size: 96px;
             line-height: 1;
             margin-bottom: 10px;
-            background: linear-gradient(135deg, var(--color-accent), #00c3ff, var(--color-neon-pink));
+            background: linear-gradient(135deg, var(--color-accent), #00c3ff, var(--color-accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 20px rgba(0, 255, 204, 0.4));
+            filter: drop-shadow(0 0 20px rgba(26, 201, 248, 0.4));
             animation: pulseGlow 2.5s ease-in-out infinite alternate;
         }
 
         @keyframes pulseGlow {
-            from { filter: drop-shadow(0 0 15px rgba(0, 255, 204, 0.3)); }
+            from { filter: drop-shadow(0 0 15px rgba(26, 201, 248, 0.3)); }
             to { filter: drop-shadow(0 0 35px rgba(255, 51, 102, 0.6)); }
         }
 
@@ -110,7 +125,7 @@
             font-family: var(--font-heading);
             font-size: 20px;
             letter-spacing: 2px;
-            color: var(--color-neon-pink);
+            color: var(--color-accent);
             text-transform: uppercase;
             margin-bottom: 15px;
         }
@@ -134,7 +149,7 @@
             padding: 16px 36px;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(0, 255, 204, 0.4);
+            box-shadow: 0 8px 25px rgba(26, 201, 248, 0.4);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             letter-spacing: 1px;
             font-weight: 800;
@@ -142,7 +157,7 @@
 
         .cta-btn:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 35px rgba(0, 255, 204, 0.7);
+            box-shadow: 0 12px 35px rgba(26, 201, 248, 0.7);
         }
 
         .quick-links {
@@ -185,7 +200,7 @@
         .game-chip:hover {
             border-color: var(--color-accent);
             color: var(--color-accent);
-            background: rgba(0, 255, 204, 0.06);
+            background: rgba(26, 201, 248, 0.06);
             transform: translateY(-2px);
         }
 
@@ -209,11 +224,17 @@
                 justify-content: center;
             }
         }
+    .logo-img {
+            height: 56px;
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(26, 201, 248, 0.4));
+        }
     </style>
 </head>
 <body>
 
-    <a href="/" class="header-logo">S<span class="logo-v">v</span>K</a>
+    <a href="/" class="header-logo" title="Svokion"><img src="/svokion-icon.svg" alt="" class="header-brand-icon"><img src="/svokion.svg" alt="Svokion" class="logo-img"></a>
 
     <div class="error-card">
         <h1 class="glitch-404">404</h1>
@@ -229,8 +250,10 @@
         <div class="quick-links">
             <span class="quick-links-title">Or jump straight into:</span>
             <div class="game-chips">
-                <a href="/?game=the-button" class="game-chip">🕹️ The Button</a>
-                <a href="/?game=drop-off" class="game-chip">🔥 Drop-Off</a>
+                <a href="/games/drop-off/" class="game-chip">Drop-Off</a>
+                <a href="/games/the-button/" class="game-chip">The Button</a>
+                <a href="/games/maze/" class="game-chip">Maze</a>
+                <a href="/" class="game-chip">All Games</a>
             </div>
         </div>
     </div>

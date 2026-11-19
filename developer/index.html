@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Game Builder - SvK</title>
+    <meta name="description" content="Build, play, and publish custom games on SvK Games.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://svk-games.netlify.app/developer">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate icon" href="/favicon.ico">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://svk-games.netlify.app/developer">
+    <meta property="og:title" content="Game Builder - SvK">
+    <meta property="og:description" content="Build, play, and publish custom games on SvK.">
+    <meta property="og:image" content="https://svk-games.netlify.app/og-image.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #080f1d;
+            --bg-card: rgba(5, 10, 20, 0.85);
+            --color-accent: #1ac9f8;
+            --color-neon-pink: #ff3366;
+            --color-purple: #1ac9f8;
+            --text-primary: #ffffff;
+            --text-secondary: #9aa0c7;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --font-heading: 'Bungee', cursive;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --transition-smooth: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(26, 201, 248, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 90% 90%, rgba(26, 201, 248, 0.06) 0%, transparent 40%);
+            overflow-x: hidden;
+        }
+
+        .builder-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            background: rgba(10, 10, 25, 0.9);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            color: var(--color-accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+        }
+
+        .header-brand-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 10px rgba(26, 201, 248, 0.5));
+            transition: transform 0.2s ease, filter 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .logo:hover .header-brand-icon {
+            transform: scale(1.05) rotate(6deg);
+            filter: drop-shadow(0 0 18px rgba(26, 201, 248, 0.8));
+        }
+
+        .logo-v {
+            font-size: 20px;
+            margin: 0 1px;
+            color: var(--color-accent);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: var(--transition-smooth);
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+        }
+
+        .back-link:hover {
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-chip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .user-badge {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-secondary);
+        }
+
+        .user-badge.developer {
+            color: #38bdf8;
+            text-shadow: 0 0 8px rgba(26, 201, 248, 0.6);
+        }
+
+        .user-badge.admin {
+            color: var(--color-accent);
+            text-shadow: 0 0 8px rgba(26, 201, 248, 0.5);
+        }
+
+        .user-badge.owner {
+            color: #ffd700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+
+        .user-badge.player {
+            color: #00c3ff;
+        }
+
+        .builder-container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 36px 24px 60px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            flex: 1;
+        }
+
+        .hero-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .hero-title-group h1 {
+            font-family: var(--font-heading);
+            font-size: 32px;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .btn-create-project {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #1ac9f8, #6366f1);
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(26, 201, 248, 0.4);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-create-project:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 201, 248, 0.6);
+        }
+
+        .builder-tabs {
+            display: flex;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 14px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-heading);
+            font-size: 14px;
+            letter-spacing: 1px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: #ffffff;
+        }
+
+        .tab-btn.active {
+            color: var(--color-accent);
+            text-shadow: 0 0 10px rgba(26, 201, 248, 0.6);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 22px;
+        }
+
+        .project-card {
+            background: rgba(18, 18, 42, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-smooth);
+        }
+
+        .project-card:hover {
+            border-color: rgba(26, 201, 248, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(26, 201, 248, 0.15);
+        }
+
+        .card-preview {
+            height: 150px;
+            background: linear-gradient(135deg, #111129, #1b1638);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-content {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .card-title {
+            font-family: var(--font-body);
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .card-btn {
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: center;
+            border: none;
+        }
+
+        .card-btn.open {
+            flex: 2;
+            background: rgba(26, 201, 248, 0.2);
+            border: 1px solid rgba(26, 201, 248, 0.4);
+            color: #38bdf8;
+        }
+
+        .card-btn.open:hover {
+            background: #1ac9f8;
+            color: #ffffff;
+        }
+
+        .card-btn.submit {
+            flex: 2;
+            background: rgba(26, 201, 248, 0.12);
+            border: 1px solid rgba(26, 201, 248, 0.3);
+            color: var(--color-accent);
+        }
+
+        .card-btn.submit:hover {
+            background: var(--color-accent);
+            color: #050510;
+        }
+
+        .card-btn.delete {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+        }
+
+        .card-btn.delete:hover {
+            background: rgba(255, 51, 102, 0.2);
+            border-color: rgba(255, 51, 102, 0.4);
+            color: #ff4d79;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 70px 24px;
+            background: rgba(15, 15, 35, 0.5);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            font-size: 52px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-icon svg {
+            width: 56px;
+            height: 56px;
+            display: block;
+        }
+
+        .empty-title {
+            font-family: var(--font-body);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .empty-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            max-width: 440px;
+            margin: 0 auto 24px auto;
+        }
+
+        @media (max-width: 680px) {
+            .builder-header {
+                padding: 14px 18px;
+            }
+            .builder-container {
+                padding: 24px 16px;
+            }
+            .hero-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    .logo-img {
+            height: 52px;
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(26, 201, 248, 0.4));
+        }
+        </style>
+</head>
+<body>
+
+    <header class="builder-header">
+        <div class="header-left">
+            <a href="/" class="logo" title="Svokion"><img src="/svokion-icon.svg" alt="" class="header-brand-icon"><img src="/svokion.svg" alt="Svokion" class="logo-img"></a>
+            <a href="/" class="back-link">
+                <span>←</span>
+                <span>Back to Games</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-chip" id="user-chip">
+                <span class="user-name" id="user-name">Guest Player</span>
+                <span class="user-badge" id="user-badge">Local Only</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="builder-container">
+        <section class="hero-banner">
+            <div class="hero-title-group">
+                <h1>GAME BUILDER</h1>
+            </div>
+            <button type="button" class="btn-create-project" id="btn-create-project">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Create New Project</span>
+            </button>
+        </section>
+
+        <nav class="builder-tabs">
+            <button type="button" class="tab-btn active" data-tab="projects" id="tab-projects">My Projects</button>
+            <button type="button" class="tab-btn" data-tab="published" id="tab-published">My Published Games</button>
+            <button type="button" class="tab-btn" data-tab="assets" id="tab-assets">My Assets</button>
+        </nav>
+
+        <div class="tab-pane active" id="pane-projects">
+            <div class="projects-grid" id="projects-grid"></div>
+        </div>
+
+        <div class="tab-pane" id="pane-published">
+            <div class="empty-state">
+                <div class="empty-icon">🎮</div>
+                <h3 class="empty-title">No games published</h3>
+                <p class="empty-desc">No games published, make one and submit it now:</p>
+                <button type="button" class="btn-create-project" id="btn-create-published">+ Create New Project</button>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="pane-assets">
+            <div class="empty-state">
+                <div class="empty-icon">🧱</div>
+                <h3 class="empty-title">No Assets Uploaded Yet</h3>
+                <p class="empty-desc">Create Models &amp; Presets and upload them to toolbox for other creators!</p>
+                <button type="button" class="btn-create-project" id="btn-create-assets">+ Create New Project</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const state = {
+            currentUser: null,
+            projects: []
+        };
+
+        function restoreUserState() {
+            try {
+                const raw = sessionStorage.getItem("_svk_session_cache");
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    state.currentUser = parsed;
+                }
+            } catch (e) {}
+
+            const nameEl = document.getElementById("user-name");
+            const badgeEl = document.getElementById("user-badge");
+
+            if (state.currentUser && state.currentUser.uid) {
+                if (nameEl) nameEl.textContent = state.currentUser.username ? `@${state.currentUser.username}` : "Creator";
+                if (badgeEl) {
+                    const role = state.currentUser.role || "user";
+                    if (role === "owner") {
+                        badgeEl.textContent = "OWNER";
+                        badgeEl.className = "user-badge owner";
+                    } else if (role === "admin") {
+                        badgeEl.textContent = "ADMIN";
+                        badgeEl.className = "user-badge admin";
+                    } else if (role === "developer") {
+                        badgeEl.textContent = "DEVELOPER";
+                        badgeEl.className = "user-badge developer";
+                    } else {
+                        badgeEl.textContent = "PLAYER";
+                        badgeEl.className = "user-badge player";
+                    }
+                }
+            } else {
+                if (nameEl) nameEl.textContent = "Guest Player";
+                if (badgeEl) {
+                    badgeEl.textContent = "LOCAL ONLY";
+                    badgeEl.className = "user-badge";
+                }
+            }
+        }
+
+        function loadProjects() {
+            try {
+                const raw = localStorage.getItem("_svk_studio_projects");
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        state.projects = parsed;
+                        return;
+                    }
+                }
+            } catch (e) {}
+            state.projects = [];
+        }
+
+        function saveProjects() {
+            try {
+                localStorage.setItem("_svk_studio_projects", JSON.stringify(state.projects));
+            } catch (e) {}
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById("projects-grid");
+            if (!grid) return;
+
+            if (state.projects.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-icon"><svg width="60" height="60" viewBox="0 0 64 64" fill="none"><defs><filter id="grassGlow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#4ade80" flood-opacity="0.35"/></filter></defs><g filter="url(#grassGlow)"><polygon points="12,20 32,31 32,53 12,42" fill="#78350f" stroke="#451a03" stroke-width="2" stroke-linejoin="round"/><polygon points="32,31 52,20 52,42 32,53" fill="#92400e" stroke="#451a03" stroke-width="2" stroke-linejoin="round"/><path d="M 12 20 L 32 31 L 32 34 L 29 34 L 26 31 L 21 38 L 16 31 L 12 25 Z" fill="#22c55e" stroke="#451a03" stroke-width="1.8" stroke-linejoin="round"/><path d="M 32 31 L 52 20 L 52 25 L 47 31 L 43 38 L 38 31 L 35 34 L 32 34 Z" fill="#16a34a" stroke="#451a03" stroke-width="1.8" stroke-linejoin="round"/><polygon points="32,8 52,20 32,31 12,20" fill="#4ade80" stroke="#451a03" stroke-width="2" stroke-linejoin="round"/></g></svg></div>
+                        <h3 class="empty-title">No Projects Yet</h3>
+                        <p class="empty-desc">Create your first game on Svokion!</p>
+                        <button type="button" class="btn-create-project" id="empty-create-btn">+ Create New Project</button>
+                    </div>
+                `;
+                const emptyBtn = document.getElementById("empty-create-btn");
+                if (emptyBtn) emptyBtn.addEventListener("click", createNewProject);
+                return;
+            }
+
+            grid.innerHTML = state.projects.map(p => `
+                <div class="project-card" data-id="${p.id}">
+                    <div class="card-preview">🧱</div>
+                    <div class="card-content">
+                        <h3 class="card-title">${p.title}</h3>
+                        <div class="card-meta">
+                            <span>Updated: ${p.updatedAt || 'Recent'}</span>
+                            <span>${p.blocks || 0} blocks</span>
+                        </div>
+                        <div class="card-actions">
+                            <button type="button" class="card-btn open" data-id="${p.id}">Open in Editor</button>
+                            <button type="button" class="card-btn submit" data-id="${p.id}">Submit Game</button>
+                            <button type="button" class="card-btn delete" data-id="${p.id}">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+
+            grid.querySelectorAll(".card-btn.open").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const id = btn.getAttribute("data-id");
+                    const p = state.projects.find(item => item.id === id);
+                    openInEditor(p);
+                });
+            });
+
+            grid.querySelectorAll(".card-btn.submit").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    if (!state.currentUser || !state.currentUser.uid) {
+                        alert("Please sign in on the main site to submit games for review! 🔒");
+                        return;
+                    }
+                    const id = btn.getAttribute("data-id");
+                    const p = state.projects.find(item => item.id === id);
+                    const name = p ? p.title : "Project";
+                    if (state.currentUser.role === "owner") {
+                        alert(`Owner submission: "${name}" published directly to live! 🚀`);
+                    } else {
+                        alert(`"${name}" submitted! An Admin will playtest it before publishing.`);
+                    }
+                });
+            });
+
+            grid.querySelectorAll(".card-btn.delete").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const id = btn.getAttribute("data-id");
+                    state.projects = state.projects.filter(item => item.id !== id);
+                    saveProjects();
+                    renderProjects();
+                });
+            });
+        }
+
+        function createNewProject() {
+            window.location.href = "/games/studio/editor.html";
+        }
+
+        function openInEditor(project) {
+            const id = project ? project.id : "";
+            window.location.href = `/games/studio/editor.html?id=${encodeURIComponent(id)}`;
+        }
+
+        function setupTabs() {
+            const tabs = document.querySelectorAll(".tab-btn");
+            const panes = document.querySelectorAll(".tab-pane");
+
+            tabs.forEach(tab => {
+                tab.addEventListener("click", () => {
+                    const target = tab.getAttribute("data-tab");
+                    tabs.forEach(t => t.classList.toggle("active", t === tab));
+                    panes.forEach(p => p.classList.toggle("active", p.id === `pane-${target}`));
+                });
+            });
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            restoreUserState();
+            loadProjects();
+            renderProjects();
+            setupTabs();
+
+            const createBtn = document.getElementById("btn-create-project");
+            if (createBtn) createBtn.addEventListener("click", createNewProject);
+
+            const publishedCreateBtn = document.getElementById("btn-create-published");
+            if (publishedCreateBtn) publishedCreateBtn.addEventListener("click", createNewProject);
+
+            const assetsCreateBtn = document.getElementById("btn-create-assets");
+            if (assetsCreateBtn) assetsCreateBtn.addEventListener("click", createNewProject);
+        });
+    </script>
+</body>
+</html>
