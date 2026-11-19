@@ -1236,7 +1236,7 @@ class PortalController {
         const game = this.games.find(g => g.id === this.activeGameId);
         const gameTitle = game ? game.title : "Svokion";
         const gameUrl = this.activeGameId 
-            ? `https://svk-games.netlify.app/games/${this.activeGameId}/`
+            ? `https://svokion.netlify.app/games/${this.activeGameId}/`
             : window.location.origin;
 
         if (navigator.share) {

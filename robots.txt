@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://svk-games.netlify.app/sitemap.xml
+Sitemap: https://svokion.netlify.app/sitemap.xml
