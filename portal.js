@@ -703,6 +703,9 @@ class PortalController {
         } else {
             const cacheBuster = Date.now();
             const absolutePath = game.path.startsWith("/") ? game.path : "/" + game.path;
+            const urlParams = new URLSearchParams(window.location.search);
+            const roomParam = urlParams.get('room');
+            const roomQuery = roomParam ? `&room=${encodeURIComponent(roomParam)}` : '';
             this.wrapper.innerHTML = `
                 <div id="game-loader-overlay" class="game-loader-overlay">
                     <div class="loader-pulse-logo"><img src="/svokion-icon.svg" alt="" class="loader-pulse-icon"><img src="/svokion.svg" alt="Svokion" class="loader-pulse-broad"></div>
@@ -715,7 +718,7 @@ class PortalController {
                         <span id="loader-bytes">Connecting...</span>
                     </div>
                 </div>
-                <iframe src="${absolutePath}?v=${cacheBuster}" 
+                <iframe src="${absolutePath}?v=${cacheBuster}${roomQuery}" 
                         id="active-game-iframe"
                         allow="autoplay; keyboard; fullscreen; clipboard-write; pointer-lock"
                         scrolling="no">
@@ -989,6 +992,9 @@ class PortalController {
 
         const cacheBuster = Date.now();
         const absolutePath = game.path.startsWith("/") ? game.path : "/" + game.path;
+        const urlParams = new URLSearchParams(window.location.search);
+        const roomParam = urlParams.get('room');
+        const roomQuery = roomParam ? `&room=${encodeURIComponent(roomParam)}` : '';
         this.wrapper.innerHTML = `
             <div id="game-loader-overlay" class="game-loader-overlay">
                 <div class="loader-pulse-logo"><img src="/svokion-icon.svg" alt="" class="loader-pulse-icon"><img src="/svokion.svg" alt="Svokion" class="loader-pulse-broad"></div>
@@ -1004,7 +1010,7 @@ class PortalController {
             <button id="mobile-back-btn" class="mobile-back-btn" onclick="portal.exitMobileFullscreen()">
                 ✕ Back
             </button>
-            <iframe src="${absolutePath}?v=${cacheBuster}" 
+            <iframe src="${absolutePath}?v=${cacheBuster}${roomQuery}" 
                     id="active-game-iframe"
                     allow="autoplay; keyboard; fullscreen; clipboard-write; pointer-lock"
                     scrolling="no">

@@ -7,6 +7,13 @@
     <link rel="canonical" href="https://svokion.netlify.app/games/maze/">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="alternate icon" href="/favicon.ico">
+    <script>
+    var p = new URLSearchParams(window.location.search);
+    var r = p.get('room');
+    if(r){
+      window.location.replace('/?game=maze&room=' + encodeURIComponent(r));
+    }
+    </script>
     
     <meta name="description" content="Play Maze free online on SvK Games. You are trapped inside a multi-staged maze—find the escape ladders, survive across all stages, or switch to Hard Mode to face the Ghost. Instant play on PC and mobile!">
     <meta name="keywords" content="maze, maze game, 3d maze, escape maze, survival maze, adventure games, blocky maze, ghost maze, svk games, browser games, free online games">
