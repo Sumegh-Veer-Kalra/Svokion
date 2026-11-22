@@ -582,7 +582,7 @@ body.is-mobile .rip-btn{
     <div id="mp-screen-host" style="display:none;flex-direction:column;gap:14px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span style="font-size:9px;color:#94a3b8;">ROOM CODE:</span>
-        <div id="mp-host-code" style="font-size:16px;color:#38bdf8;letter-spacing:4px;font-weight:bold;">----</div>
+        <div id="mp-host-code" style="font-size:16px;color:#38bdf8;letter-spacing:4px;font-weight:bold;user-select:text;-webkit-user-select:text;cursor:text;">----</div>
         <button id="btn-mp-share" style="
           background:#1e293b;border:1px solid #38bdf8;color:#38bdf8;font-family:'Press Start 2P',monospace;
           font-size:8px;padding:6px 10px;border-radius:6px;cursor:pointer;line-height:1;
@@ -2421,7 +2421,7 @@ document.getElementById('btn-rip-restart-stats').addEventListener('click', funct
 
 document.getElementById('btn-rip-save-quit').addEventListener('click', function(ev){
   ev.stopPropagation();
-  if(window.MazeMP && window.MazeMP.isRacing){
+  if(window.MazeMP && (window.MazeMP.isRacing || window.MazeMP.activeRoomCode || window.MazeMP.matchFinished)){
     document.getElementById('gameover').style.display = 'none';
     window.MazeMP.resetToMenu();
     return;
@@ -2604,7 +2604,7 @@ if(btnPauseRestart){
 if(btnPauseQuit){
   btnPauseQuit.addEventListener('click', function(e){
     e.stopPropagation();
-    if(window.MazeMP && window.MazeMP.isRacing){
+    if(window.MazeMP && (window.MazeMP.isRacing || window.MazeMP.activeRoomCode || window.MazeMP.matchFinished)){
       if(pauseMenu) pauseMenu.style.display = 'none';
       window.MazeMP.resetToMenu();
       return;
@@ -2820,7 +2820,7 @@ checkSavedGame();
 
 var mv={f:false,b:false,l:false,r:false,up:false,down:false,sprint:false,jump:false,joyX:0,joyY:0};
 var vy=0,velX=0,velZ=0,onGround=false;
-var GRAV=-24,JF=8.5,SPD=4.8,FLY_SPD=10,PW=0.3,PH=1.62;
+var GRAV=-24,JF=8.5,SPD=4.0,FLY_SPD=10,PW=0.3,PH=1.62;
 
 function resetMovementKeys(){
   mv.f=false;mv.b=false;mv.l=false;mv.r=false;
@@ -3843,7 +3843,7 @@ function animate(now){
       if(sp.onSoulSand){maxS=SPD*0.35;fric=14;acc=30;}
       else if(sp.onIce){maxS=SPD*1.7;fric=1.1;acc=12;}
       else if(!onGround&&!sp.onLadder){fric=1.8;acc=16;}
-      if(mv.sprint&&!sp.onSoulSand)maxS*=1.5;
+      if(mv.sprint&&!sp.onSoulSand)maxS=5.5;
 
       var tx=0,tz=0;
       if(mv.joyX || mv.joyY){
@@ -3948,8 +3948,16 @@ function animate(now){
       if(!win && Math.abs(pos.x - 4) < 1.2 && Math.abs(pos.z - (-19)) < 1.2 && Math.abs(pos.y - 20.62) < 2.0){
         win = true;
         lastCheckpointCamPos = {x: 4, y: 20.17, z: -18};
-        showCheckpointBanner("YOU DID IT!", "You escaped the impossible... but only for now >:D", 8000); drawBillboardVictory(); updateLiveHud();
-        if(window.MazeMP && window.MazeMP.isRacing) window.MazeMP.onVictoryTrigger();
+        if(window.MazeMP && window.MazeMP.isRacing){
+          showCheckpointBanner("🏆 YOU WON!", "You escaped first! Leaving in 30 seconds...", 15000);
+          drawBillboardVictory();
+          updateLiveHud();
+          window.MazeMP.onVictoryTrigger();
+        } else {
+          showCheckpointBanner("YOU DID IT!", "You escaped the impossible... but only for now >:D", 8000);
+          drawBillboardVictory();
+          updateLiveHud();
+        }
       }
 
     _hudFrame++;
@@ -3971,6 +3979,6 @@ function animate(now){
 animate(0);
 }
 </script>
-<script type="module" src="multiplayer.js?v=2.8"></script>
+<script type="module" src="multiplayer.js?v=2.9"></script>
 </body>
 </html>

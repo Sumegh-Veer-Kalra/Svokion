@@ -844,10 +844,10 @@ var MazeMP = {
         }
       }
 
-      if(room.status === 'starting' && !self.isStartingCountdown && !self.isRacing){
+      if(room.status === 'starting' && !self.isStartingCountdown && !self.isRacing && !self.matchFinished){
         self.handleStartingCountdown(room);
       }
-      if(room.status === 'countdown' && !self.isRacing){
+      if(room.status === 'countdown' && !self.isRacing && !self.matchFinished){
         self.startRaceCountdown(room);
       }
     });
@@ -1060,11 +1060,16 @@ var MazeMP = {
     group.position.set(-1, 2.62, 14);
     if(window.scene) window.scene.add(group);
 
+    headMat._origColor = headMat.color.clone();
+    faceMat._origColor = faceMat.color.clone();
+    bodyMat._origColor = bodyMat.color.clone();
+
     return {
       group: group,
       targetPos: new THREE.Vector3(-1, 2.62, 14),
       targetRotY: 0,
-      currentColor: col
+      currentColor: col,
+      materials: [headMat, faceMat, bodyMat]
     };
   },
 
@@ -1081,6 +1086,7 @@ var MazeMP = {
     if(opp && opp.targetPos){
       opp.targetPos.set(data.x, data.y, data.z);
       opp.targetRotY = data.r || 0;
+      opp.isDead = !!data.dead;
     }
   },
 
@@ -1100,7 +1106,8 @@ var MazeMP = {
           z: Number(pos.z.toFixed(2)),
           r: Number(safeRotY.toFixed(2)),
           name: this.localPlayer.name,
-          color: this.localPlayer.color || '#38bdf8'
+          color: this.localPlayer.color || '#38bdf8',
+          dead: !!(window.playerHP <= 0)
         });
       }
     }
@@ -1125,13 +1132,26 @@ var MazeMP = {
         if(opp && opp.group){
           opp.group.position.lerp(opp.targetPos, factor);
           opp.group.rotation.y += (opp.targetRotY - opp.group.rotation.y) * factor;
+          var targetRotZ = opp.isDead ? (Math.PI / 2) : 0;
+          opp.group.rotation.z += (targetRotZ - opp.group.rotation.z) * factor;
+          if(opp.materials){
+            for(var mIdx = 0; mIdx < opp.materials.length; mIdx++){
+              var mat = opp.materials[mIdx];
+              if(opp.isDead){
+                if(mat.color) mat.color.setHex(0xef4444);
+              } else {
+                if(mat.color && mat._origColor) mat.color.copy(mat._origColor);
+              }
+            }
+          }
         }
       }
     }
   },
 
   onVictoryTrigger: function(){
-    if(!this.isRacing || !this.activeRoomCode) return;
+    if(!this.isRacing || !this.activeRoomCode || this.matchFinished) return;
+    this.matchFinished = true;
     var winRef = ref(db, 'maze_rooms/' + this.activeRoomCode + '/winner');
     var finalTime = window.runTimer || 0;
     set(winRef, {
@@ -1139,23 +1159,28 @@ var MazeMP = {
       name: this.localPlayer.name,
       time: finalTime
     });
+    if(this.isHost){
+      update(ref(db, 'maze_rooms/' + this.activeRoomCode), { status: 'finished' });
+    }
   },
 
   onMatchFinished: function(winner){
     this.isRacing = false;
-    var isMe = (winner.uid === this.localPlayer.uid);
+    this.matchFinished = true;
+    this.isFrozen = false;
 
-    if(isMe){
-      if(window.showCheckpointBanner){
-        var title = winner.byForfeit ? 'YOU WON!' : 'YOU ESCAPED FIRST!';
-        var sub = winner.byForfeit ? 'All opponents left the match. Leaving in 30 seconds...' : 'Leaving match in 30 seconds...';
-        window.showCheckpointBanner(title, sub, 30000);
-      }
-    } else {
-      if(window.showCheckpointBanner){
-        window.showCheckpointBanner((winner.name || 'Runner') + ' ESCAPED FIRST!', 'Leaving match in 30 seconds...', 30000);
-      }
+    var isMe = (winner.uid === this.localPlayer.uid);
+    var t = Number(winner.time) || 0;
+    var m = Math.floor(t / 60);
+    var s = Math.floor(t % 60);
+    var timeStr = (m<10?'0':'')+m + ':' + (s<10?'0':'')+s;
+
+    if(window.showCheckpointBanner){
+      var title = isMe ? '🏆 YOU WON!' : ((winner.name || 'Runner') + ' ESCAPED FIRST!');
+      var sub = isMe ? ('FINISH TIME: ' + timeStr) : ((winner.name || 'Runner') + ' WON WITH ' + timeStr);
+      window.showCheckpointBanner(title, sub, 15000);
     }
+
     if(window.drawBillboardVictory) window.drawBillboardVictory();
     if(window.updateLiveHud) window.updateLiveHud();
 
@@ -1163,7 +1188,7 @@ var MazeMP = {
     if(!leaveNotice){
       leaveNotice = document.createElement('div');
       leaveNotice.id = 'mp-auto-leave-notice';
-      leaveNotice.style.cssText = 'position:fixed;top:54px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,0.92);border:2px solid #38bdf8;padding:8px 16px;border-radius:8px;font-family:\'Press Start 2P\',monospace;font-size:10px;color:#38bdf8;z-index:400;letter-spacing:1px;box-shadow:0 0 15px rgba(56,189,248,0.4);white-space:nowrap;';
+      leaveNotice.style.cssText = 'position:fixed;top:54px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,0.92);border:2px solid #38bdf8;padding:8px 16px;border-radius:8px;font-family:\'Press Start 2P\',monospace;font-size:10px;color:#38bdf8;z-index:2100;letter-spacing:1px;box-shadow:0 0 15px rgba(56,189,248,0.4);white-space:nowrap;';
       document.body.appendChild(leaveNotice);
     }
     leaveNotice.style.display = 'block';
@@ -1249,6 +1274,9 @@ var MazeMP = {
     var leaveNotice = document.getElementById('mp-auto-leave-notice');
     if(leaveNotice) leaveNotice.style.display = 'none';
 
+    var vicOverlay = document.getElementById('mp-victory-overlay');
+    if(vicOverlay) vicOverlay.style.display = 'none';
+
     if(window.controls && window.controls.unlock){
       window.controls.unlock();
     }
@@ -1271,11 +1299,18 @@ var MazeMP = {
     var modal = document.getElementById('mp-modal');
     if(modal) modal.style.display = 'none';
 
+    if(window.clearProgressData){
+      window.clearProgressData();
+    }
+
     var diffScreen = document.getElementById('difficulty-screen');
     if(diffScreen) diffScreen.style.display = 'flex';
     var liveHud = document.getElementById('live-hud-badge');
     if(liveHud) liveHud.style.display = 'none';
     window.isRunActive = false;
+    this.isFrozen = false;
+    this.matchFinished = false;
+    if(window.checkSavedGame) window.checkSavedGame();
   },
 
   initHostWorker: function(){
