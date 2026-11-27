@@ -209,7 +209,7 @@ var MazeMP = {
       btnShareLink.addEventListener('click', function(e){
         e.stopPropagation();
         if(!self.activeRoomCode) return;
-        var url = window.location.origin + '/?game=maze&room=' + self.activeRoomCode;
+        var url = window.location.origin + '/games/maze/?room=' + self.activeRoomCode;
         if(navigator.clipboard && navigator.clipboard.writeText){
           navigator.clipboard.writeText(url).then(function(){
             btnShareLink.innerHTML = '<span>✓ COPIED!</span>';

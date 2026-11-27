@@ -8,10 +8,14 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="alternate icon" href="/favicon.ico">
     <script>
-    var p = new URLSearchParams(window.location.search);
-    var r = p.get('room');
-    if(r){
-      window.location.replace('/?game=maze&room=' + encodeURIComponent(r));
+    if (!/bot|crawl|spider|google|slurp|bing|facebookexternalhit|whatsapp|telegram|meta|preview|vkshare|discord/i.test(navigator.userAgent)) {
+      var p = new URLSearchParams(window.location.search);
+      var r = p.get('room');
+      if (r) {
+        window.location.replace('/?game=maze&room=' + encodeURIComponent(r));
+      } else {
+        window.location.replace('/?game=maze');
+      }
     }
     </script>
     
@@ -24,9 +28,14 @@
     <meta property="og:title" content="Maze | 3D Escape Adventure Game on SvK Games">
     <meta property="og:description" content="Play Maze free online on SvK Games. You are trapped inside a multi-staged maze—find the escape ladders, survive across all stages, or switch to Hard Mode to face the Ghost. Instant play on PC and mobile!">
     <meta property="og:image" content="https://svokion.netlify.app/games/maze/cover_landscape.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://svokion.netlify.app/games/maze/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Maze | 3D Escape Adventure Game on SvK Games">
+    <meta name="twitter:description" content="Play Maze free online on SvK Games. You are trapped inside a multi-staged maze—find the escape ladders, survive across all stages, or switch to Hard Mode to face the Ghost. Instant play on PC and mobile!">
+    <meta name="twitter:image" content="https://svokion.netlify.app/games/maze/cover_landscape.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,11 +64,6 @@
     }
     </script>
 
-    <script>
-    if (!/bot|crawl|spider|google|slurp|bing/i.test(navigator.userAgent)) {
-        window.location.replace("/?game=maze");
-    }
-    </script>
 
     <style>
         :root {

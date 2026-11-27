@@ -663,9 +663,9 @@ class PortalController {
         const ratio = game.aspectRatio ? game.aspectRatio.replace('/', ' / ') : (game.orientation === 'portrait' ? '9 / 16' : '16 / 9');
         this.wrapper.style.setProperty('--game-aspect-ratio', ratio);
 
-        if (!window.location.search.includes("game=")) {
-            window.history.replaceState(null, "", `/games/${gameId}/`);
-        }
+        const roomParam = new URLSearchParams(window.location.search).get('room');
+        const roomSuffix = roomParam ? `?room=${encodeURIComponent(roomParam)}` : '';
+        window.history.replaceState(null, "", `/games/${gameId}/${roomSuffix}`);
 
         console.log(`[Portal] Launching game: ${game.title} (${game.orientation})`);
 
@@ -1241,8 +1241,10 @@ class PortalController {
     shareActiveGame() {
         const game = this.games.find(g => g.id === this.activeGameId);
         const gameTitle = game ? game.title : "Svokion";
+        const roomParam = new URLSearchParams(window.location.search).get('room');
+        const roomSuffix = roomParam ? `?room=${encodeURIComponent(roomParam)}` : '';
         const gameUrl = this.activeGameId 
-            ? `https://svokion.netlify.app/games/${this.activeGameId}/`
+            ? `https://svokion.netlify.app/games/${this.activeGameId}/${roomSuffix}`
             : window.location.origin;
 
         if (navigator.share) {
