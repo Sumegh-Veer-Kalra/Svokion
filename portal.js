@@ -145,15 +145,15 @@ class PortalController {
         };
 
         Storage.prototype.setItem = function(key, value) {
-            console.warn("[SvK Security] Direct localStorage.setItem from console is disabled.");
+            console.warn("[Svokion Security] Direct localStorage.setItem from console is disabled.");
         };
 
         Storage.prototype.removeItem = function(key) {
-            console.warn("[SvK Security] Direct localStorage.removeItem from console is disabled.");
+            console.warn("[Svokion Security] Direct localStorage.removeItem from console is disabled.");
         };
 
         Storage.prototype.clear = function() {
-            console.warn("[SvK Security] Direct localStorage.clear from console is disabled.");
+            console.warn("[Svokion Security] Direct localStorage.clear from console is disabled.");
         };
 
         setInterval(() => {
@@ -1847,12 +1847,12 @@ class PortalController {
                         statusMsg.classList.remove("success");
                     }
                     if (this.authMode === "register") {
-                        if (title) title.textContent = "Create SvK Account";
+                        if (title) title.textContent = "Create Svokion Account";
                         if (submitText) submitText.textContent = "Create Account";
                         toggleModeBtn.textContent = "Already have an account? Sign In";
                         if (forgotBtn) forgotBtn.style.display = "none";
                     } else {
-                        if (title) title.textContent = "SvK Games Account";
+                        if (title) title.textContent = "Svokion Account";
                         if (submitText) submitText.textContent = "Sign In";
                         toggleModeBtn.textContent = "Need an account? Register";
                         if (forgotBtn) forgotBtn.style.display = "inline-block";
@@ -3176,7 +3176,7 @@ class PortalController {
                     const badgeStyle = isReply
                         ? "background: rgba(0, 255, 204, 0.2); color: #00ffcc;"
                         : "background: rgba(255, 187, 0, 0.2); color: #ffbb00;";
-                    const senderName = w.from || (isReply ? "SvK Administration" : "SvK Administration");
+                    const senderName = w.from || (isReply ? "Svokion Administration" : "Svokion Administration");
 
                     card.innerHTML = `
                         <div class="admin-card-header">
@@ -3333,7 +3333,7 @@ class PortalController {
                     message: replyMsg,
                     issuedAt: new Date().toISOString(),
                     type: "support_reply",
-                    from: this.isOwner ? "SvK Owner" : "SvK Administration"
+                    from: this.isOwner ? "Svokion Owner" : "Svokion Administration"
                 };
 
                 let existing = [];
